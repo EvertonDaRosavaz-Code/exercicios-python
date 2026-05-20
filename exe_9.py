@@ -91,5 +91,4 @@ if distribuicao == 'S':
 
 
 
-print(lista
 
