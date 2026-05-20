@@ -9,7 +9,7 @@
 ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝╚══════╝╚═╝ ╚═════╝ ╚══════╝
 ```
 
-# 🐍 Exercícios Python — EvertonDaRosavaz
+# 🐍 Exercícios Python — Everton Da Rosa vaz
 
 **Uma jornada de aprendizado do zero **
 
