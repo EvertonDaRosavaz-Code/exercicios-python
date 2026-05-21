@@ -1,8 +1,12 @@
 #CRUD#
 import msvcrt
+from docx import Document
+import os
+
 
 usuarios = [];
 id_inicial = -1
+
 def adicionar_Usuario(id, name, idade, cpf):
     usuario = {"id": id, "nome": name, "idade":idade, "cpf":cpf}
 
@@ -17,16 +21,6 @@ def remover_Usuario(name):
 def consultarUsuarios():
     for i in usuarios:
         print(f'{i}')    
-
-def editar_Usuarios(name):
-    for i in usuarios:
-        if i["nome"] == name:
-            print('\n' + '═' * 40)
-            print(f'Escolha abaixo o que deseja editar de(a) {i["nome"]}')
-            print('1 - Nome')
-            print('2 - Idade')
-            print('3 - cpf')
-
 
 def input_cpf():
     cpf = ''
@@ -48,6 +42,39 @@ def input_cpf():
     print()
     return formatado
 
+def editar_Usuarios(name):
+    for i in usuarios:
+        if i["nome"] == name:
+            print('\n' + '═' * 40)
+            print(f'Escolha abaixo o que deseja editar de(a) {i["nome"]}')
+            print('1 - Nome')
+            print('2 - Idade')
+            print('3 - cpf')
+
+            new_Data = int(input("Numero: "))
+            if new_Data == 1:
+                new_name = input("Novo nome:")
+                i["nome"] = new_name
+            if new_Data == 2:
+                new_idade = int(input("Nova idade:"))
+                i["idade"] = new_idade
+
+            if new_Data == 3:
+                new_cpf = input_cpf()
+                i["cpf"] = new_cpf
+
+def salvar_Usuarios():
+    doc = Document()
+    doc.add_heading("Lista de Usuários",0)
+
+    for u in usuarios:
+        doc.add_paragraph(f"ID: {u['id']} | Nome: {u['nome']}| idade :{u['idade']} |CPF: {u['cpf']}")
+
+    desktop = os.path.join(os.path.expanduser('~'),"OneDrive", "Desktop", "usuarios.docx")
+
+    doc.save(desktop)
+
+    
 
 #Iniciar o processo
 init = input("Deseja inificar o processo ? (S/N)").lower()
@@ -61,6 +88,7 @@ if init  == 's':
         print('  2 - ❌  Remover usuário')
         print('  3 - 🔍  Consultar usuários')
         print('  4 - ✏️  Editar')
+        print('  5 - 🖨️ Salvar em documento')
         print('═' * 40)
         number  = int(input('Escolha:'))
 
@@ -68,19 +96,29 @@ if init  == 's':
             id_inicial+=1
             nome  = input('Nome do usuario:')
 
-            if not nome.isalpha():
-                print(' 😢 O nome contém numero! Tente novamente')
-                continue
+            while not nome.replace(' ','').isalpha():
+                print('Nome invalido! Use apenas letras')
+                nome  = input('Nome do usuario:')
 
             try:
-                idade = int(input('Idade do usuário:'))
+                while True:
+                    idade_User = int(input('Idade do usuário:'))
+                    if idade_User > 100:
+                        print('A idade deve ser menor que 100')
+                        continue
+                    if len(str(idade_User)) > 3:
+                        print('A quantidade de digitos deve ser menor que 4')
+                        continue
+                    else:
+                        break
+
             except ValueError:
                 print(' 😢 Erro na idade! Digite apenas números. Tente novamente')
                 continue
             
             cpf = input_cpf()
 
-            adicionar_Usuario(id_inicial, nome, idade, cpf);
+            adicionar_Usuario(id_inicial, nome, idade_User, cpf);
 
         if number == 2:
             nome = input('Nome do usuário:')
@@ -89,11 +127,14 @@ if init  == 's':
 
         if number == 3:
             consultarUsuarios()
-
+        
+        
         if number == 4:
             nome = input('Nome do usuario:')
             editar_Usuarios(nome)
 
+        if number == 5:
+            salvar_Usuarios()
 
 
         #Finalizar o processo 
