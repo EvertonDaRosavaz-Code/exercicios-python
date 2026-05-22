@@ -1,13 +1,30 @@
-import customtkinter as ctk
+import mysql.connector
+from dotenv import load_dotenv
+import os
 
-# Define o tema (pode trocar para "Dark" ou "Light")
-ctk.set_appearance_mode("System")
-ctk.set_default_color_theme("green")
 
-# Cria a janela principal
-app = ctk.CTk()
-app.title("Sistema de Ordem de Serviço")
-app.geometry("1200x650")  # Largura x Altura
+load_dotenv()
 
-# Mantém a janela aberta
-app.mainloop()
+
+conexao  = mysql.connector.connect(
+    host = os.getenv("DB_HOST"),
+    user = os.getenv("DB_USER"),
+    password = os.getenv("DB_PASSWORD"),
+    database = os.getenv("DB_NAME")
+)
+
+
+if conexao.is_connected():
+    db_info = conexao.get_server_info()
+
+    cursor = conexao.cursor()
+    cursor.execute("SELECT DATABASE();")
+    linha = cursor.fetchone()
+
+
+    cursor.close()
+    conexao.close()
+    print('Conexão encerrado')
+
+else:
+    print("Erro ao conectar ")
