@@ -1,42 +1,26 @@
-import mysql.connector
-from dotenv import load_dotenv
-import os
+# Calculadora simples em Python
 
-def testar_ConexaoDb():
-    load_dotenv()
+print("=== Calculadora ===")
 
+# Entrada dos números
+num1 = float(input("Digite o primeiro número: "))
+operacao = input("Digite a operação (+, -, *, /): ")
+num2 = float(input("Digite o segundo número: "))
 
-    conexao  = mysql.connector.connect(
-        host     = os.getenv("DB_HOST"),
-        user     = os.getenv("DB_USER"),
-        password = os.getenv("DB_PASSWORD"),
-        database = os.getenv("DB_NAME")
-    )
-
-
-    if conexao.is_connected():
-        print('Conectado ao banco de Dados')
+# Cálculo
+if operacao == "+":
+    resultado = num1 + num2
+elif operacao == "-":
+    resultado = num1 - num2
+elif operacao == "*":
+    resultado = num1 * num2
+elif operacao == "/":
+    if num2 != 0:
+        resultado = num1 / num2
     else:
-        print("Erro ao conectar ")
+        resultado = "Erro: divisão por zero!"
+else:
+    resultado = "Operação inválida!"
 
-def cabecalho():
-    #Limpar o terminal mais apresentavel
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print("=" * 50)
-    print("       🗄️  BANCO DE DADOS - USUÁRIOS")
-    print("=" * 50)
-    print()
-    print("   Seja bem-vindo ao sistema de gerenciamento!")
-    print()
-    print("   O que deseja fazer?")
-    print()
-    print("   [1]  ➕  Adicionar usuário")
-    print("   [2]  🗑️   Remover usuário")
-    print("   [3]  ✏️   Editar usuário")
-    print("   [0]  🚪  Sair")
-    print()
-    print("=" * 50)
-cabecalho()
-
-
-opcao = input("   Opção: ")
+# Resultado
+print("Resultado:", resultado)
